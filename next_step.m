@@ -10,6 +10,6 @@
 
 function [output] = next_stepun(x,y,xx,yy)
     index=dsearchn([xx' yy'],[x y]);
-    output=index;
+    output=index+1;
 end
 

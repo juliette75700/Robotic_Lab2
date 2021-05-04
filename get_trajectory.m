@@ -2,7 +2,7 @@
 % trajectory generation test using cubic splines and plot the vehicle 
 % 
 %
-
+function [outputArg]=get_trajectory
 clear all
 h = 0.0001;
 
@@ -77,11 +77,12 @@ csinterp_y = csapi(nvia,y);
 time = [0:h:npt-1];
 xx = fnval(csinterp_x, time);
 yy = fnval(csinterp_y, time);
-plot(xx,yy)
+plot(xx,yy);
 
 % draw the car at every 10 points of the trajectory
 tp = length(xx);
 sp = round(tp/10);
+theta=[]; xxx=[]; yyy=[];
 for k=1:sp:tp,
     if k+1<=tp
         theta_car = atan2(yy(k+1)-yy(k), xx(k+1)-xx(k));
@@ -92,6 +93,8 @@ for k=1:sp:tp,
         rot_car_polygon(p,:) = ([cos(theta_car), -sin(theta_car); sin(theta_car), cos(theta_car)]*car_polygon(p,:)')';
     end
     plot(rot_car_polygon(:,1)/x_scale+xx(k), rot_car_polygon(:,2)/y_scale+yy(k))
+    theta=[theta,theta_car];
+    xxx=[xxx,xx(k)]; yyy=[yyy,yy(k)];
 end
 
 i=1;
@@ -151,4 +154,8 @@ if button==99
         i = i + 1;
     end
 end
+
+outputArg=[xxx;yyy;theta];
+end
+
 

@@ -1,4 +1,4 @@
-function [outputArg] = control_block1(x_ref,y_ref,theta_ref,x,y,theta)
+function [output1,output2] = control_block(x_ref,y_ref,theta_ref,x,y,theta)
 %CONTROL take the values computed and planned by the simulator and the
 %navigator and deduce the low level control values (v,w)
 Kv=0.03;
@@ -12,6 +12,7 @@ e_b=T*e_w;
 K=[Kv 0 0;
     0 Kl Ks];
 u= K*e_b;
-outputArg=u;
+output1=u(1);
+output2=u(2);
 end
 

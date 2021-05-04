@@ -11,7 +11,7 @@ theta_ref=coord(3,:);
 time=0;
 h=0.01;
 p=length(coord);
-k=0;
+k
 while k<=p
     x=x_ref(1); y=y_ref(1); theta=theta_ref(1); %starting at same position as the ref
     x_mem=[x]; y_mem=[y]; theta_mem=[theta]; v_mem=[0]; ws_mem=[0];% for plots later

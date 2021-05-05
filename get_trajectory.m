@@ -53,19 +53,20 @@ disp('use the mouse to input via points for the reference trajectory');
 disp('--button a,b,c and d-- to enter the respectives events');
 disp('--button 9-- to end the input');
 button = 1;
-k = 1;
-while button==1
-    [x(k),y(k),button] = ginput(1);
-    if button==1
-        plot(x(k),y(k),'r+')
-    else
-        x(k)=[];
-        y(k)=[];
-    end
-    k = k + 1;
-end
-
-
+% k = 1;
+% while button==1
+%     [x(k),y(k),button] = ginput(1);
+%     if button==1
+%         plot(x(k),y(k),'r+')
+%     else
+%         x(k)=[];
+%         y(k)=[];
+%     end
+%     k = k + 1;
+% end
+x=[689.520783120557,710.845238042250,711.396732566087];
+y=[524.029743279966,516.492651454195,491.307734865643];
+k=4;
 drawnow;
 disp([ num2str(k-1), ' points to interpolate from '])
 

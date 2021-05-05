@@ -2,7 +2,7 @@ function [output1,output2] = control_block(x_ref,y_ref,theta_ref,x,y,theta)
 %CONTROL take the values computed and planned by the simulator and the
 %navigator and deduce the low level control values (v,w)
 Kv=0.03;
-Kl=1;
+Kl=10000;
 Ks=100;
 e_w=[x_ref-x; y_ref-y; theta_ref-theta];
 T=[cos(theta) sin(theta) 0;

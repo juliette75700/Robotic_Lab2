@@ -53,19 +53,19 @@ disp('use the mouse to input via points for the reference trajectory');
 disp('--button a,b,c and d-- to enter the respectives events');
 disp('--button 9-- to end the input');
 button = 1;
-% k = 1;
-% while button==1
-%     [x(k),y(k),button] = ginput(1);
-%     if button==1
-%         plot(x(k),y(k),'r+')
-%     else
-%         x(k)=[];
-%         y(k)=[];
-%     end
-%     k = k + 1;
-% end
-x=[689.520783120557,710.845238042250,711.396732566087];
-y=[524.029743279966,516.492651454195,491.307734865643];
+k = 1;
+while button==1
+    [x(k),y(k),button] = ginput(1);
+    if button==1
+        plot(x(k),y(k),'r+')
+    else
+        x(k)=[];
+        y(k)=[];
+    end
+    k = k + 1;
+end
+%  x=[498.581526452732,693.079358196011,711.313529921943,705.235472679965,687.001300954033,687.001300954033];
+%  y=[540.687337380745,522.453165654813,507.258022549870,403.931049436253,182.081960104076,169.925845620121];
 k=4;
 drawnow;
 disp([ num2str(k-1), ' points to interpolate from '])
@@ -80,9 +80,9 @@ xx = fnval(csinterp_x, time);
 yy = fnval(csinterp_y, time);
 plot(xx,yy);
 
-% draw the car at every 10 points of the trajectory
+% draw the car at every 22 points of the trajectory
 tp = length(xx);
-sp = round(tp/10);
+sp = round(tp/22);
 theta=[]; xxx=[]; yyy=[];
 for k=1:sp:tp,
     if k+1<=tp

@@ -32,7 +32,7 @@ function [outputArg] = all_blocs
         x_a=x_ref(k);y_a=y_ref(k);
         time=time+h;
          if k<p-1
-        [a,as]=control_bloc2(x_ref(k),y_ref(k),theta_ref(k),x_deltat,y_deltat,theta_deltat,x,y,theta,h+3);
+        [a,as]=control_bloc2(x_ref(k),y_ref(k),theta_ref(k),x_deltat,y_deltat,theta_deltat,x,y,theta,h+1);
         %%Limitateur de vitess        
         if v>=v_lim
             v=v_lim;
@@ -45,42 +45,26 @@ function [outputArg] = all_blocs
             ws=ws+as*h;
         end
         [x,y,theta,phi]=simulator(x,y,theta,v,ws,h,phi); %Simule la voiture à l'instant t+h
-        [x_deltat,y_deltat,theta_deltat]=simulator(x,y,theta,v,ws,h+3,phi); %Calcule la conf de la voiture à t+h+2
+        [x_deltat,y_deltat,theta_deltat]=simulator(x,y,theta,v,ws,h+1,phi); %Calcule la conf de la voiture à t+h+2
         
             [k,stop,stop_duration,finished]=next_step(x_deltat,y_deltat,x_ref,y_ref,Event);% compute the index of coord of the next step
         end
         
-        if k==p-1
-          [a,as]=control_bloc3(x_ref(k),y_ref(k),theta_ref(k),x_deltat,y_deltat,theta_deltat,x,y,theta,h+3);
-          if v>=v_lim
-            v=v_lim;
-        else
-            v=v+a*h;
-        end
-        if ws>=ws_lim
-            ws=ws_lim;
-        else
-            ws=ws+as*h;
-        end
+        if k=>p-1
+          [a,as]=control_bloc3(x_ref(k),y_ref(k),theta_ref(k),x_deltat,y_deltat,theta_deltat,x,y,theta,h+1);
+          v=v+a*h;
+          ws=ws+as*h;
           [x,y,theta,phi]=simulator(x,y,theta,v,ws,h,phi); %Simule la voiture à l'instant t+h
-          [x_deltat,y_deltat,theta_deltat]=simulator(x,y,theta,v,ws,h+3,phi); %Calcule la conf de la voiture à t+h+2
+          [x_deltat,y_deltat,theta_deltat]=simulator(x,y,theta,v,ws,h+1,phi); %Calcule la conf de la voiture à t+h+2
           [k,stop,stop_duration,finished]=next_step(x_deltat,y_deltat,x_ref,y_ref,Event);% compute the index of coord of the next step
  
         end
         if k==p
-          [a,as]=control_bloc3(x_ref(k),y_ref(k),theta_ref(k),x_deltat,y_deltat,theta_deltat,x,y,theta,h+3);
-          if v>=v_lim
-            v=v_lim;
-        else
-            v=v+a*h;
-        end
-        if ws>=ws_lim
-            ws=ws_lim;
-        else
-            ws=ws+as*h;
-        end
+          [a,as]=control_bloc3(x_ref(k),y_ref(k),theta_ref(k),x_deltat,y_deltat,theta_deltat,x,y,theta,h+1);
+          v=v+a*h;
+          ws=ws+as*h;
           [x,y,theta,phi]=simulator(x,y,theta,v,ws,h,phi); %Simule la voiture à l'instant t+h
-          [x_deltat,y_deltat,theta_deltat]=simulator(x,y,theta,v,ws,h+3,phi); %Calcule la conf de la voiture à t+h+2
+          [x_deltat,y_deltat,theta_deltat]=simulator(x,y,theta,v,ws,h+1,phi); %Calcule la conf de la voiture à t+h+2
  
         end
         

@@ -1,8 +1,8 @@
-function [output1,output2] = control_bloc2(xref_deltat,yref_deltat,thetaref_deltat,x_deltat,y_deltat,theta_deltat,x,y,theta,h)
+function [output1,output2] = control_bloc3(xref_deltat,yref_deltat,thetaref_deltat,x_deltat,y_deltat,theta_deltat,x,y,theta,h)
 %CONTROL_BLOC2 Same purpose as control_bloc1 but with the error of the
 %speed
 % Output the accelerations! 
-Kv=0.03;
+Kv=0.1;
 Kl=0.001;%-> rapidité à réagir
 Ks=0.09;% -> intensité du signal
 v_xref=(xref_deltat-x)/h;

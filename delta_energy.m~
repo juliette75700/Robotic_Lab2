@@ -1,8 +1,9 @@
-function [output,e_spent]= det_v_max(e_budget,e_spent,v,a,h,step_remained)
+function [output,e_spent]= det_v_max(e_budget,e_spent,v,a,h)
 e_spent=e_spent+delta_e(v,a,h);
 e_available=e_budget-e_spent;
-v_max=e_available/(h*step_remained*P0);
-end
+
+v_max=e_available/(h*
+
 
 function [output] = delta_e(v,a,delta_t)
 M=810;%Kg

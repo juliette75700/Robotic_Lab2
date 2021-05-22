@@ -54,20 +54,20 @@ disp('--button 1,2,3 and 4--(in this order) to enter the respectives events');
 disp('--button 9-- to end the input');
 button = 1;
 k = 1;
-% while button==1
-%     [x(k),y(k),button] = ginput(1);
-%     if button==1
-%         plot(x(k),y(k),'r+')
-%     else
-%         x(k)=[];
-%         y(k)=[];
-%     end
-%     k = k + 1;
-% end
+while button==1
+    [x(k),y(k),button] = ginput(1);
+    if button==1
+        plot(x(k),y(k),'b+')
+    else
+        x(k)=[];
+        y(k)=[];
+    end
+    k = k + 1;
+end
 
- x=[7.021964440589766e+02,7.173915871639202e+02,7.265086730268864e+02];
-y=[6.500923677363394e+02,7.534193408499563e+02,8.658633998265391e+02];
-k=5;
+%  x=[7.021964440589766e+02,7.173915871639202e+02,7.265086730268864e+02];
+% y=[6.500923677363394e+02,7.534193408499563e+02,8.658633998265391e+02];
+% k=5;
 drawnow;
 disp([ num2str(k-1), ' points to interpolate from '])
 
@@ -80,6 +80,11 @@ time = [0:h:npt-1];
 xx = fnval(csinterp_x, time);
 yy = fnval(csinterp_y, time);
 plot(xx,yy);
+norms=[];
+for i=1:length(xx)-1
+  norms=[norms;(xx(i)-xx(i+1))^2+(yy(i)-yy(i+1))^2];
+end
+A=sum(norms);
 
 % draw the car at every 10 points of the trajectory
 tp = length(xx);
@@ -121,11 +126,13 @@ if button==49 %event 1 is selected
         [event_1_x(i),event_1_y(i),button] = ginput(1);
         if button==1
             index=dsearchn([xx' yy'],[event_1_x(i) event_1_y(i)]);
+            index_xxx=dsearchn([xxx' yyy'],[event_1_x(i) event_1_y(i)]);
             plot(xx(index),yy(index),'ro')
             event_1_x(i)=xx(index);
             event_1_y(i)=yy(index);
-            xx=[xx(1:index),xx(index),xx(index+1:end)];%change trejectory to stop the car
-            yy=[yy(1:index),yy(index),yy(index+1:end)];
+            xxx=[xxx(1:index_xxx-1),xx(index),xx(index),xxx(index_xxx+1:end)];%change trejectory to stop the car
+            yyy=[yyy(1:index_xxx-1),yy(index),yy(index),yyy(index_xxx+1:end)];         
+            theta=[theta(1:index_xxx-1),theta(index_xxx),theta(index_xxx),theta(index_xxx+1:end)];
             disp('There is a stop trafic sign at the location: ')
             disp('x:')
             disp(event_1_x(i))
@@ -145,7 +152,7 @@ if button==50 %event 2 is selected
     while button==1
         [event_2_x(i),event_2_y(i),button] = ginput(1);
         if button==1
-            index=dsearchn([xx' yy'],[event_2_x(i) event_2_y(i)])
+            index=dsearchn([xx' yy'],[event_2_x(i) event_2_y(i)]);
             plot(xx(index),yy(index),'bh')
             event_2_x(i)=xx(index);
             event_2_y(i)=yy(index);
@@ -246,4 +253,3 @@ Event.three=[704.439883288324,359.247788944638,81.4723686393179,15.5016550437853
 Event.four=[710.703708516447,446.592693704846,10,10];%[event_4_x event_4_y event_4_time event_4_duration];
 outputArg=[xxx;yyy;theta];
 end
-

@@ -1,6 +1,6 @@
-function stop_the_car(coord_ref,coord,p,h,time,Event)
+function [k,stop_duration]=stop_the_car(coord_ref,coord,k,p,h,v,time,Event,stop_duration)
 x=coord(1); y=coord(2); time_over=false; 
-global timer2 stop counter v stop_duration k;
+global timer2 stop counter;
 x_ref=coord_ref(1); y_ref=coord_ref(2);
 (x-x_ref)^2+(y-y_ref)^2;
 if (x-x_ref)^2+(y-y_ref)^2<sqrt(5)^2||v<10^(-1) %if we are close to this reference point
@@ -33,18 +33,19 @@ if (x-x_ref)^2+(y-y_ref)^2<sqrt(5)^2||v<10^(-1) %if we are close to this referen
         counter=1;
     end
     timer2=timer2+h;
-    if mod(timer2,4)==0
+    if mod(timer2,stop_duration)==0
         time_over=true;
         timer2=0;
     end
     if time_over==true %else the stop time is over
         k=k+1; %we take the next reference point in order to start again
         stop=false; %we are not in stop mode anymore
+        time_over=false;
         counter=0;
     end
 else %else we are not close to the stop point
     k=k; %we keep this stop point as reference
-    %we stay in stop mode
+    stop=true; %we stay in stop mode
 end
 end
 

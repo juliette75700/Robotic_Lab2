@@ -54,7 +54,7 @@ disp('--button 1,2,3 and 4--(in this order) to enter the respectives events');
 disp('--button 9-- to end the input');
 button = 1;
 k = 1;
-while button==1
+ while button==1
     [x(k),y(k),button] = ginput(1);
     if button==1
         plot(x(k),y(k),'b+')
@@ -65,9 +65,9 @@ while button==1
     k = k + 1;
 end
 
-%  x=[7.021964440589766e+02,7.173915871639202e+02,7.265086730268864e+02];
-% y=[6.500923677363394e+02,7.534193408499563e+02,8.658633998265391e+02];
-% k=5;
+% x=[6.457013665159888e+02,6.660442240386146e+02];
+% y=[2.937084106784181e+02,5.156715894252914e+02];
+% k=4;
 drawnow;
 disp([ num2str(k-1), ' points to interpolate from '])
 

@@ -4,6 +4,7 @@ function [output1,output4] = simulator(coord,v,ws,delta_t,phi)
 %orientation, and speed.
 %Give as outputs the position and orientation at instant t+delta_t
 L=2.2;
+global stop;
 phi=phi+ws*delta_t;
 if phi>pi/8
     phi=pi/8;

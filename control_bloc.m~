@@ -1,10 +1,8 @@
-function [output1,output2] = control_bloc3(coord_ref,coord_deltat,coord,h)
+function [a,as] = control_bloc(coord_ref,coord_deltat,coord,h,Kv,Kl,Ks)
 %CONTROL_BLOC2 Same purpose as control_bloc1 but with the error of the
 %speed
 % Output the accelerations! 
-Kv=0.9;
-Kl=0.001;%-> rapidité à réagir
-Ks=0.1;% -> intensité du signal
+
 v_xref=(coord_ref(1)-coord(1))/h;
 v_yref=(coord_ref(2)-coord(2))/h;
 v_thetaref=(coord_ref(3)-coord(3))/h;
@@ -20,7 +18,7 @@ e_b=T*e_w;
 K=[Kv 0 0;
     0 Kl Ks];
 u= K*e_b;
-output1=u(1);
-output2=u(2);
+a=u(1);
+as=u(2);
 end
 

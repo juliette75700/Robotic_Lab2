@@ -1,25 +1,62 @@
-function [output]=low_control(x_t,y_t,theta_t,phi_t,x_delta_t,y_delta_t,theta_delta_t,delta_t)
-%Located in the control function
-%take as inputs the actual (t) and the futur (delta_t) variables (x,y,theta)
-%give in outputs the speed of the back and front wheels (wr,wl,w,phi_delta_t)
-
-r=0.256;
-L=2.2;
-
-x_dot=(x_delta_t-x_t)/delta_t;
-y_dot=(y_delta_t-y_t)/delta_t;
-theta_dot=(theta_delta_t-theta_t)/delta_t;
-if cos(theta_delta_t)<=10^(-4) %equivalent à cos(theta_delta_t)==0, dû à arrondis de pi/2
-    V=y_dot/sin(theta_delta_t);
-elseif cos(theta_delta_t)>=10^(-4)   
-    V=x_dot/cos(theta_delta_t);
+function low_control(h,e_budget, step_remaining,coord_ref,coord_deltat,coord)
+global e_spent v ws a stop;
+e_spent=e_spent+delta_e(v,a,h);
+v_lim=9;
+if stop==false
+  [a,as]=control_bloc(coord_ref,coord_deltat,coord,h,0.01,0.01,0.3);
+else 
+  [a,as]=control_bloc(coord_ref,coord_deltat,coord,h,0.05,0.001,0.03);
 end
-phi_delta_t=atan(theta_delta_t*L/V);
-phi_dot=(phi_delta_t-phi_t)/delta_t;
 
-wr=V/r;
-wl=wr;
-w=phi_dot;
+a=lim_acc(v,a,h,step_remaining,e_budget);
+[v,ws]=lim_speed(v,ws,a,as,h,v_lim);
+end
 
-output=[wr,wl,w,phi_delta_t];
+function [output] = delta_e(v,a,delta_t)
+M=810;%Kg
+P0=1000;
+output=(M*abs(a)*abs(v)+P0)*3*delta_t;
+end
+
+function [v,ws]=lim_speed(v,ws,a,as,h,v_lim)
+    if v+a*h>v_lim
+         v=v_lim;
+    else
+        v=v+a*h;
+        if v<0
+            v=0;
+        end
+    end
+    ws=ws+as*h;
+ end
+
+function [a]=lim_acc(v,a,h,step_remaining,e_budget)
+    a_max=det_a_max(e_budget,a,v,2*h,step_remaining);
+    if abs(a)>a_max
+        if a>0
+            a=a_max;
+        else
+            a=-a_max;
+        end
+    else
+        a=a;
+    end
+end
+
+function [a_max]= det_a_max(e_budget,a,v,h,step_remaining)
+global finished e_spent stop;
+P0=1000;
+M=810;
+e_available=e_budget-e_spent;
+if e_available<=100
+    finished=true;
+    disp('Car runs out of energy');
+    a_max=0;
+    return;
+end
+if stop==true && a<0
+    a_max=(e_available+1.5*10^4)/(3*h*step_remaining*v*M)-P0/M;
+else    
+    a_max=max((e_available-1.5*10^4)/(3*h*step_remaining*v*M)-P0/M,0);
+end
 end
